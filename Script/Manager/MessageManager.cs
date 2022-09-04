@@ -5,7 +5,7 @@ namespace CSharpTcpServer.Manager
 {
     public class MessageManager
     {
-        public static void ProcessData(WebSocketController pc, DataFormat dataFormat)                      // 클라이언트로부터 들어온 정보를 처리하기 위한 함수
+        public static void ProcessData(WebSocketController wsController, DataFormat dataFormat)                      // 클라이언트로부터 들어온 정보를 처리하기 위한 함수
         {
             byte eventCode = dataFormat.eventCode;
             Dictionary<byte, object> param = new Dictionary<byte, object>();
