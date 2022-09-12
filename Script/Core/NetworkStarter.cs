@@ -16,9 +16,10 @@ namespace CSharpTcpServer.Core
         }
         public void MakeNewThreadTest()
         {
-            while(true)
+            ThreadManager.GetInstance().RegistThread("WorkerThread",new Worker());
+            while (true)
             {
-                ThreadManager.GetInstance().MakeThread(1000);
+                ThreadManager.GetInstance().MakeThread("WorkerThread", 1000);
                 Thread.Sleep(3000);
             }
         }

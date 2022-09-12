@@ -6,28 +6,27 @@ using System.Threading.Tasks;
 
 namespace CShapr_Tcp_Server.Core.ThreadSystem
 {
-    public class ThreadCore : IDisposable
+    public class ThreadBase : IDisposable
     {
         protected int delayTime;
         protected bool isThreadStop;
         protected Thread thread;
 
         /// <summary>
-        /// 딜레이 타임을 넣고 스레드 생성
+        /// 스레드 생성자
         /// </summary>
         /// <param name="delayTime">딜레이 타임</param>
-        public ThreadCore(int delayTime)
+        public ThreadBase()
         {
-            this.delayTime = delayTime;
             isThreadStop = false;
             thread = new Thread(ThreadAction);
         }
-
         /// <summary>
         /// 스레드 시작
         /// </summary>
-        public void ThreadStart()
+        public void ThreadStart(int delayTime)
         {
+            this.delayTime = delayTime;
             thread.Start();
         }
         /// <summary>
@@ -35,6 +34,7 @@ namespace CShapr_Tcp_Server.Core.ThreadSystem
         /// </summary>
         protected virtual void ThreadAction()
         {
+            // 상속받은 클래스에서 재정의 필요
         }
         /// <summary>
         /// 스레드 삭제
@@ -42,9 +42,25 @@ namespace CShapr_Tcp_Server.Core.ThreadSystem
         public void Dispose()
         {
             isThreadStop = true;
-            Console.WriteLine("ThreadStop");
+            Console.WriteLine(GetThreadName() + " thread stopped");
             GC.SuppressFinalize(this);
-            Console.WriteLine("Thread Kill");
+        }
+        /// <summary>
+        /// 스레드 복사에 사용
+        /// </summary>
+        /// <returns>상속받은 객체</returns>
+        public virtual ThreadBase Clone()
+        {
+            // 상속받은 클래스에서 재정의 필요
+            return this;
+        }
+        /// <summary>
+        /// 스레드 이름 정의 - 클래스와 같게 설정
+        /// </summary>
+        /// <returns>스레드 이름</returns>
+        public virtual string GetThreadName()
+        {
+            return "ThreadBase";
         }
     }
 }
