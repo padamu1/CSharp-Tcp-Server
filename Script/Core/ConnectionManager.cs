@@ -10,18 +10,44 @@ namespace CSharpTcpServer.Core
         public ConnectionManager(int port)
         {
             tcpListener = new TcpListener(IPAddress.Any, port);
-            clients = new Dictionary<TcpClient,WebSocketController>();
-            tcpListener.Start();
-            //비동기 Listening 시작
-            tcpListener.BeginAcceptTcpClient(OnAcceptClient, null);
+            clients = new Dictionary<TcpClient, WebSocketController>();
         }
 
         private void OnAcceptClient(IAsyncResult ar)
         {
-            TcpClient client = tcpListener.EndAcceptTcpClient(ar);
-            Console.WriteLine("Client Connected");
-            WebSocketController webSocketController = new WebSocketController(client);
+            try
+            {
+                TcpClient client = tcpListener.EndAcceptTcpClient(ar);
+                Console.WriteLine("Client Connected");
+                WebSocketController webSocketController = new WebSocketController(client);
+                tcpListener.BeginAcceptTcpClient(OnAcceptClient, null);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+        public void ServerStart()
+        {
+            tcpListener.Start();
+            //비동기 Listening 시작
             tcpListener.BeginAcceptTcpClient(OnAcceptClient, null);
+        }
+        public void ServerStop()
+        {
+            try
+            {
+                tcpListener.Server.Shutdown(SocketShutdown.Both);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            finally
+            {
+                tcpListener.Server.Close();
+                tcpListener.Stop();
+            }
         }
     }
 }

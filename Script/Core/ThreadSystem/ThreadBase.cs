@@ -20,6 +20,7 @@ namespace CShapr_Tcp_Server.Core.ThreadSystem
         {
             isThreadStop = false;
             thread = new Thread(ThreadAction);
+            thread.IsBackground = true;
         }
         /// <summary>
         /// 스레드 시작

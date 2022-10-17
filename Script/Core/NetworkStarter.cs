@@ -1,27 +1,33 @@
 ﻿using CShapr_Tcp_Server.Core;
+using CShapr_Tcp_Server.Core.ThreadSystem;
 
 namespace CSharpTcpServer.Core
 {
-    public class NetworkStarter
+    public class NetworkStarter : ThreadBase
     {
-        public ConnectionManager ConnectionManager { get; set; }
+        private ConnectionManager? m_connectionManager;
         public NetworkStarter()
         {
             // 스레드 매니저 생성
             ThreadManager.GetInstance();
-            Thread ee = new Thread(MakeNewThreadTest);
-            ee.Start();
-
-            ConnectionManager = new ConnectionManager(3000);
+            m_connectionManager = new ConnectionManager(3000);
+            thread.Start();
         }
-        public void MakeNewThreadTest()
+        protected override void ThreadAction()
         {
-            ThreadManager.GetInstance().RegistThread("WorkerThread",new Worker());
-            while (true)
+            base.ThreadAction();
+            while(true)
             {
-                ThreadManager.GetInstance().MakeThread("WorkerThread", 1000);
-                Thread.Sleep(3000);
+
             }
+        }
+        public void ServerStop()
+        {
+            m_connectionManager?.ServerStop();
+        }
+        public void ServerStart()
+        {
+            m_connectionManager?.ServerStart();
         }
 
     }
