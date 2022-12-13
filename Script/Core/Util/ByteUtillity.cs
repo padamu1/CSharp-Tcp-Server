@@ -4,14 +4,19 @@ using System.Text.Json;
 
 namespace CSharpTcpServer.Core.Util
 {
-    public class DataFormat
+    public class EventData
     {
         public byte eventCode;
         public Dictionary<byte, object>? data;
+        public EventData(byte eventCode, Dictionary<byte,object> data)
+        {
+            this.eventCode = eventCode;
+            this.data = data;
+        }
     }
     public class ByteUtillity
     {
-        public static DataFormat ByteToObject(byte[] buffer)
+        public static EventData ByteToObject(byte[] buffer)
         {
             try
             {
@@ -20,11 +25,11 @@ namespace CSharpTcpServer.Core.Util
                 {
                     return null;
                 }
-                DataFormat? dataFormat = JsonConvert.DeserializeObject<DataFormat>(data);
+                EventData? eventData = JsonConvert.DeserializeObject<EventData>(data);
 
                 Console.WriteLine(data);
-                Console.WriteLine(dataFormat?.eventCode);
-                return dataFormat;
+                Console.WriteLine(eventData?.eventCode);
+                return eventData;
             }
             catch (Exception exception)
             {

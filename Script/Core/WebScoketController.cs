@@ -29,7 +29,6 @@ namespace CSharpTcpServer.Core
     }
     public class WebSocketController
     {
-        protected DataFormat dataFormat;
         public WEB_SOCKET_STATE State { get; protected set; } = WEB_SOCKET_STATE.None;
         protected readonly TcpClient targetClient;
         protected readonly NetworkStream messageStream;
@@ -37,7 +36,6 @@ namespace CSharpTcpServer.Core
 
         public WebSocketController(TcpClient tcpClient)
         {
-            dataFormat = new DataFormat();
             State = WEB_SOCKET_STATE.Connecting;  //완전한 WebSocket 연결이 아니므로 연결 중 표시
             targetClient = tcpClient;
             messageStream = targetClient.GetStream();
@@ -48,11 +46,9 @@ namespace CSharpTcpServer.Core
         /// </summary>
         /// <param name="eventCode"></param>
         /// <param name="param"></param>
-        public void SendPacket(byte eventCode, Dictionary<byte, object> param)
+        public void SendPacket(EventData eventData)
         {
-            dataFormat.eventCode = eventCode;
-            dataFormat.data = param;
-            SendData(ByteUtillity.ObjectToByte(dataFormat));
+            SendData(ByteUtillity.ObjectToByte(eventData));
         }
 
         protected void OnReadData(IAsyncResult ar)
@@ -218,7 +214,7 @@ namespace CSharpTcpServer.Core
             SendData(closeReq, PAYLOAD_DATA_TYPE.ConnectionClose);
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             Console.WriteLine(" Client Disconnected");
             targetClient.Close();

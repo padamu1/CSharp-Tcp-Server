@@ -17,9 +17,9 @@ namespace CSharpTcpServer.Core
         {
             try
             {
-                TcpClient client = tcpListener.EndAcceptTcpClient(ar);
+                TcpClient client = tcpListener.EndAcceptTcpClient(ar); 
                 Console.WriteLine("Client Connected");
-                WebSocketController webSocketController = new WebSocketController(client);
+                Client webSocketController = new Client(client);
                 tcpListener.BeginAcceptTcpClient(OnAcceptClient, null);
             }
             catch (Exception ex)

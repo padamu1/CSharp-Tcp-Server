@@ -1,4 +1,5 @@
 ﻿using CShapr_Tcp_Server.Core.ThreadSystem;
+using CShapr_Tcp_Server.Manager;
 using CSharpTcpServer.Core;
 using System.Collections;
 using System.Net;
@@ -37,11 +38,9 @@ public class Program
     private static NetworkStarter? _networkStarter;
     public static void Main()
     {
+        ClientManager.GetInstance();
         _networkStarter = new NetworkStarter();
         ServerStateManager serverStateManager = new ServerStateManager(_networkStarter);
-        while (true)
-        {
-
-        }
+        Console.ReadKey();
     }
 }
