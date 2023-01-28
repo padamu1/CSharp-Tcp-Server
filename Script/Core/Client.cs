@@ -26,8 +26,8 @@ namespace CSharpTcpServer.Core
         }
         public override void Dispose()
         {
-            base.Dispose();
             ClientManager.GetInstance().Remove(this);
+            base.Dispose();
         }
     }
 }
