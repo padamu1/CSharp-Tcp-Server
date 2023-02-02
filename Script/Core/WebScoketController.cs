@@ -186,6 +186,7 @@ namespace CSharpTcpServer.Core
                 firstByte.CopyTo(sendData, 0);
                 sendData[1] = 126;
                 byte[] lengthData = BitConverter.GetBytes((ushort)data.Length);
+                lengthData.Reverse();
                 Array.Copy(lengthData, 0, sendData, 2, 2);
                 data.CopyTo(sendData, 4);
             }
