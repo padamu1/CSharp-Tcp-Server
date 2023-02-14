@@ -13,22 +13,20 @@ public class ApplicationManager
         {
             case "Stop":
                 NetworkStarter.GetInstance().ServerStop();
-                Manage();
                 break;
             case "Start":
                 NetworkStarter.GetInstance().ServerStart();
-                Manage();
                 break;
             case "Quit":
                 return;
             default:
                 break;
         }
+        Manage();
     }
 }
 public class Program : ApplicationManager
 {
-    private static NetworkStarter? _networkStarter;
     public static void Main()
     {
         ClientManager.GetInstance();
