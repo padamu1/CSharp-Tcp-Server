@@ -1,9 +1,10 @@
-﻿using CShapr_Tcp_Server.Core;
+﻿using CShapr_Tcp_Server.Base;
+using CShapr_Tcp_Server.Core;
 using CShapr_Tcp_Server.Core.ThreadSystem;
 
 namespace CSharpTcpServer.Core
 {
-    public class NetworkStarter : ThreadBase
+    public class NetworkStarter : Singleton<NetworkStarter>
     {
         private ConnectionManager? m_connectionManager;
         public NetworkStarter()
@@ -11,15 +12,6 @@ namespace CSharpTcpServer.Core
             // 스레드 매니저 생성
             ThreadManager.GetInstance();
             m_connectionManager = new ConnectionManager(3000);
-            thread.Start();
-        }
-        protected override void ThreadAction()
-        {
-            base.ThreadAction();
-            while(true)
-            {
-
-            }
         }
         public void ServerStop()
         {

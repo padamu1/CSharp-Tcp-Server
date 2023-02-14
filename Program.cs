@@ -4,43 +4,34 @@ using CSharpTcpServer.Core;
 using System.Collections;
 using System.Net;
 using System.Net.Sockets;
-public class ServerStateManager : ThreadBase
+public class ApplicationManager 
 {
-    private NetworkStarter _networkStarter;
-    public ServerStateManager(NetworkStarter networkStarter)
+    public static void Manage()
     {
-        thread.Start();
-        this._networkStarter = networkStarter;
-    }
-    protected override void ThreadAction()
-    {
-        base.ThreadAction();
-        while (true)
+        Console.WriteLine("When you wan server Stop - input : \"Stop\", Start - input : \"Start\", End - input : \"Quit\"");
+        switch (Console.ReadLine())
         {
-            Console.Write("Server start\n");
-            Console.WriteLine("서버를 종료하시려면 \"Stop\"를 입력해주세요.");
-            switch (Console.ReadLine())
-            {
-                case "Stop":
-                    _networkStarter.ServerStop();
-                    break;
-                case "Start":
-                    _networkStarter.ServerStart();
-                    break;
-                default:
-                    break;
-            }
+            case "Stop":
+                NetworkStarter.GetInstance().ServerStop();
+                Manage();
+                break;
+            case "Start":
+                NetworkStarter.GetInstance().ServerStart();
+                Manage();
+                break;
+            case "Quit":
+                return;
+            default:
+                break;
         }
     }
 }
-public class Program
+public class Program : ApplicationManager
 {
     private static NetworkStarter? _networkStarter;
     public static void Main()
     {
         ClientManager.GetInstance();
-        _networkStarter = new NetworkStarter();
-        ServerStateManager serverStateManager = new ServerStateManager(_networkStarter);
-        Console.ReadKey();
+        Manage();
     }
 }
